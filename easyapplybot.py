@@ -412,6 +412,10 @@ class EasyApplyBot:
                                                                   error_locator[1]):
                             text = element.text
                             if "Please enter a valid answer" in text:
+                                # If form error encountered on page
+                                pause_msg = "Encountered Error on Submit\n" + \
+                                            "Press <Enter> to Continue: "
+                                input(pause_msg)   # wait for user input
                                 button = None
                                 break
                     if button:
