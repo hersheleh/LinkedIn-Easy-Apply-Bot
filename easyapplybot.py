@@ -417,7 +417,7 @@ class EasyApplyBot:
                                             "Fix Fields and click Next button" + \
                                             "then Press <Enter> to Continue: "
                                 input(pause_msg)   # wait for user input
-                                button = None
+                                # button = None # don't set button to None
                                 break
                     if button:
                         button.click()
