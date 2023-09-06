@@ -1,3 +1,4 @@
+from __future__ import annotations
 import time, random, os, csv, platform
 import logging
 from selenium import webdriver
@@ -316,12 +317,11 @@ class EasyApplyBot:
         next_locater = (By.CSS_SELECTOR,
                         "button[aria-label='Continue to next step']")
 
-        
 
-
-
+        #-------------------------------------------------- Compare Changes Mine ----
         input_field = self.browser.find_element("xpath", "//input[contains(@id,'phoneNumber')]")
-
+        # input_field = self.browser.find_element(By.CSS_SELECTOR, "input.artdeco-text-input--input[type='text']")
+        # ------------------------------------Theirs -------------------------------------------------------------
 
         if input_field:
             input_field.clear()
@@ -377,9 +377,15 @@ class EasyApplyBot:
                               "button[aria-label='Submit application']")
             submit_application_locator = (By.CSS_SELECTOR,
                                           "button[aria-label='Submit application']")
+
+            # Mine ----------------------------------------------------------------------------------------
             error_locator = (By.CSS_SELECTOR,
-                             "div[data-test-form-element-error-messages='']")
+                             # "div[data-test-form-element-error-messages='']")
+                             "p[data-test-form-element-error-message='true']")
             upload_locator = (By.CSS_SELECTOR, "input[name='file']")
+            # Fix conflicts Theirs ----------------------------------------------
+            # upload_locator = upload_locator = (By.CSS_SELECTOR, "button[aria-label='DOC, DOCX, PDF formats only (5 MB).']")
+
             follow_locator = (By.CSS_SELECTOR, "label[for='follow-company-checkbox']")
 
             submitted = False
@@ -392,8 +398,13 @@ class EasyApplyBot:
                                                                upload_locator[1])
                     for input_button in input_buttons:
                         parent = input_button.find_element(By.XPATH, "..")
+                        # Mine ---------------------------------------------------------------------
                         # sibling = parent.find_element(By.XPATH, "preceding-sibling::*")
                         # grandparent = sibling.find_element(By.XPATH, "..")
+                        # Thairs -------------------------------------------------------------------
+                        # sibling = parent.find_element(By.XPATH, "preceding-sibling::*[1]")
+                        # grandparent = sibling.find_element(By.XPATH, "..")
+                        # -------------------------------------------------------------------------
                         for key in self.uploads.keys():
                             sibling_text = sibling.text
                             # gparent_text = grandparent.text
