@@ -188,16 +188,20 @@ class EasyApplyBot:
                 IDs: list = []
                 
                 # children selector is the container of the job cards on the left
-                for link in links:
-                    children = link.find_elements("xpath",
-                        '//ul[@class="scaffold-layout__list-container"]'
-                    )
-                    for child in children:
-                        if child.text not in self.blacklist:
+                for i, link in enumerate(links):
+                    # children = link.find_elements("xpath",
+                    #     '//ul[@class="scaffold-layout__list-container"]'
+                    # )
+                    # for child in children:
+                    for company in self.blacklist:
+                        if company in link.text:
+                            break
+                        # if child.text not in self.blacklist:
+                        else:
                             temp = link.get_attribute("data-job-id")
                             jobID = temp.split(":")[-1]
                             IDs.append(int(jobID))
-                IDs: list = set(IDs)
+                IDs: list = set(IDs) 
 
                 # remove already applied jobs
                 before: int = len(IDs)
@@ -316,7 +320,7 @@ class EasyApplyBot:
 
 
 
-        input_field = self.browser.find_element("xpath", "//input[contains(@name,'phoneNumber')]")
+        input_field = self.browser.find_element("xpath", "//input[contains(@id,'phoneNumber')]")
 
 
         if input_field:
@@ -374,7 +378,7 @@ class EasyApplyBot:
             submit_application_locator = (By.CSS_SELECTOR,
                                           "button[aria-label='Submit application']")
             error_locator = (By.CSS_SELECTOR,
-                             "p[data-test-form-element-error-message='true']")
+                             "div[data-test-form-element-error-messages='']")
             upload_locator = (By.CSS_SELECTOR, "input[name='file']")
             follow_locator = (By.CSS_SELECTOR, "label[for='follow-company-checkbox']")
 
@@ -388,12 +392,13 @@ class EasyApplyBot:
                                                                upload_locator[1])
                     for input_button in input_buttons:
                         parent = input_button.find_element(By.XPATH, "..")
-                        sibling = parent.find_element(By.XPATH, "preceding-sibling::*")
-                        grandparent = sibling.find_element(By.XPATH, "..")
+                        # sibling = parent.find_element(By.XPATH, "preceding-sibling::*")
+                        # grandparent = sibling.find_element(By.XPATH, "..")
                         for key in self.uploads.keys():
                             sibling_text = sibling.text
-                            gparent_text = grandparent.text
-                            if key.lower() in sibling_text.lower() or key in gparent_text.lower():
+                            # gparent_text = grandparent.text
+                            if key in gparent_text.lower():
+                                #key.lower() in sibling_text.lower() or
                                 input_button.send_keys(self.uploads[key])
 
                     # input_button[0].send_keys(self.cover_letter_loctn)
@@ -411,15 +416,21 @@ class EasyApplyBot:
                         for element in self.browser.find_elements(error_locator[0],
                                                                   error_locator[1]):
                             text = element.text
-                            if "Please enter a valid answer" in text:
+                            # if "Please enter a valid answer" in text:
                                 # If form error encountered on page
-                                pause_msg = "Encountered Field Error\n" + \
-                                            "Fix Fields and click Next button" + \
-                                            "then Press <Enter> to Continue: "
-                                input(pause_msg)   # wait for user input
-                                # button = None # don't set button to None
+                            pause_msg = "Encountered Field Error\n" + \
+                                        "Fix Fields and click Next button" + \
+                                        "then Press <Enter> to Continue: "
+                            option = input(pause_msg)   # wait for user input
+                            if (option == "s"):
+                                button = "s"
                                 break
-                    if button:
+                            else:
+                                break
+                    if button == "s":
+                        button = None
+                        break
+                    elif button:
                         button.click()
                         time.sleep(random.uniform(1.5, 2.5))
                         if i in (3, 4):
