@@ -380,8 +380,8 @@ class EasyApplyBot:
 
             # Mine ----------------------------------------------------------------------------------------
             error_locator = (By.CSS_SELECTOR,
-                             # "div[data-test-form-element-error-messages='']")
-                             "p[data-test-form-element-error-message='true']")
+                             "div[data-test-form-element-error-messages='']")
+                             # "p[data-test-form-element-error-message='true']")
             upload_locator = (By.CSS_SELECTOR, "input[name='file']")
             # Fix conflicts Theirs ----------------------------------------------
             # upload_locator = upload_locator = (By.CSS_SELECTOR, "button[aria-label='DOC, DOCX, PDF formats only (5 MB).']")
