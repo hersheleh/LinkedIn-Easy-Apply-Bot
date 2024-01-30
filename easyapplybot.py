@@ -20,7 +20,8 @@ import yaml
 from datetime import datetime, timedelta
 
 log = logging.getLogger(__name__)
-driver = webdriver.Chrome(ChromeDriverManager().install())
+# driver = webdriver.Chrome(ChromeDriverManager().install())
+driver = webdriver.Firefox()               # using Firefox on Ubuntu 22.02
 
 
 def setupLogger() -> None:
@@ -300,8 +301,7 @@ class EasyApplyBot:
             button = self.browser.find_elements("xpath",
                 '//button[contains(@class, "jobs-apply-button")]'
             )
-
-            EasyApplyButton = button[0]
+            EasyApplyButton = button[1]
             
         except Exception as e: 
             print("Exception:",e)
